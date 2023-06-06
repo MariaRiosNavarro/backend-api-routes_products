@@ -1,37 +1,38 @@
-import Link from "next/link";
 import useSWR from "swr";
+import { useRouter } from "next/router";
+import Link from "next/link";
 import styled from "styled-components";
 
-//fetcher muss hier sein
 const fetcher = (url) => fetch(url).then((response) => response.json());
 
-export default function ProductsList() {
-  // fetcher muss auch in der const sein
-  const { data, isLoading } = useSWR("/api/products", fetcher);
+export default function ProduktId() {
+  const router = useRouter();
+  const { id } = router.query;
+
+  const { data, isLoading } = useSWR(
+    id ? `/api/products/${id}` : null,
+    fetcher
+  );
 
   if (isLoading) {
-    return <h1>Loading...</h1>;
+    return <h1>Loading... Glub... Glub... </h1>;
   }
+
   console.log(data);
+
   if (!data) {
     return;
   }
-
   return (
     <StyledList>
-      {/* Richtig mapen!!! */}
-      {data.map((product) => {
-        return (
-          <StyledListItem key={product.id}>
-            <h3>{product.name}</h3>
-            <h4>{product.category}</h4>
-            <p>{product.description}</p>
-            <p>
-              {product.price} {product.currency}
-            </p>
-          </StyledListItem>
-        );
-      })}
+      <StyledListItem key={data.id}>
+        <h3>{data.name}</h3>
+        <h4>{data.category}</h4>
+        <p>{data.description}</p>
+        <p>
+          {data.price} {data.currency}
+        </p>
+      </StyledListItem>
     </StyledList>
   );
 }
