@@ -26,6 +26,7 @@ export default function ProduktId() {
   return (
     <StyledList>
       <StyledListItem key={data.id}>
+        <h2>Product number: {data.id}</h2>
         <h3>{data.name}</h3>
         <h4>{data.category}</h4>
         <p>{data.description}</p>
